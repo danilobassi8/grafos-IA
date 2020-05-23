@@ -95,8 +95,17 @@ public class arbolController : MonoBehaviour
             Debug.Log("error: " + e);
         }
 
+        //borra el arbol previo, y una vez borrado lo crea.
+        try
+        {
+            Destroy(GameObject.Find("ArbolVisual"));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
         //crea arbol visual.
-        CrearArbolVisual();
+        Invoke("CrearArbolVisual",0.1f); 
 
     }
 
@@ -117,21 +126,11 @@ public class arbolController : MonoBehaviour
         niveles = new Dictionary<int, List<char>>();
         separarArbolPorNivel('A', 0);
 
-        try
-        {
-            Destroy(GameObject.Find("ArbolVisual"+c));
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-
-
         var a = (GameObject)Instantiate(arbolVisualPrefab);
-        ++c;
-        a.name = "ArbolVisual"+c.ToString();
 
-        GameObject.Find("ArbolVisual"+c.ToString()).GetComponent<arbolVisualController>().creaArbolVisual(niveles, nodo);
+        a.name = "ArbolVisual";
+
+        GameObject.Find("ArbolVisual").GetComponent<arbolVisualController>().creaArbolVisual(niveles, nodo);
 
     }
     private void MostrarNiveles()
