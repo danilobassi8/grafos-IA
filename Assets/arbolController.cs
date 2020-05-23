@@ -21,12 +21,12 @@ public class arbolController : MonoBehaviour
     // niveles es un diccionario de (1,list(nodo1,nodo2))
 
 
-
+    private int c = 0;
 
 
     void Start()
     {
-
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void Update()
@@ -47,7 +47,7 @@ public class arbolController : MonoBehaviour
             nodo = new Dictionary<char, List<char>>();
             nodosHijos = new List<char>();
             cantNodosHojas = 0;
-           
+
 
             operaciones = texto.ToUpper().Split('\n');
             foreach (string op in operaciones)
@@ -97,7 +97,7 @@ public class arbolController : MonoBehaviour
 
         //crea arbol visual.
         CrearArbolVisual();
-        
+
     }
 
     public void MostrarArbol()
@@ -116,8 +116,23 @@ public class arbolController : MonoBehaviour
         //reseteo los niveles y los separo.
         niveles = new Dictionary<int, List<char>>();
         separarArbolPorNivel('A', 0);
-        GameObject.Find("ArbolVisual").GetComponent<arbolVisualController>().creaArbolVisual(niveles,nodo);
-        
+
+        try
+        {
+            Destroy(GameObject.Find("ArbolVisual"+c));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
+
+        var a = (GameObject)Instantiate(arbolVisualPrefab);
+        ++c;
+        a.name = "ArbolVisual"+c.ToString();
+
+        GameObject.Find("ArbolVisual"+c.ToString()).GetComponent<arbolVisualController>().creaArbolVisual(niveles, nodo);
+
     }
     private void MostrarNiveles()
     {
@@ -133,7 +148,7 @@ public class arbolController : MonoBehaviour
 
     private void separarArbolPorNivel(char c_nodo, int nivelActual)
     {
-        
+
         if (niveles.ContainsKey(nivelActual))
         {// si el nivel existe, me traigo los elementos del nivel q ya tenia y le agrego
             var n = niveles[nivelActual];
