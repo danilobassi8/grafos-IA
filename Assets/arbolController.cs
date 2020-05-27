@@ -126,10 +126,9 @@ public class arbolController : MonoBehaviour
         niveles = new Dictionary<int, List<char>>();
         separarArbolPorNivel('A', 0);
 
-        var a = (GameObject)Instantiate(arbolVisualPrefab);
+        var a = (GameObject)Instantiate(arbolVisualPrefab,this.gameObject.transform.position, Quaternion.identity);
 
         a.name = "ArbolVisual";
-
         GameObject.Find("ArbolVisual").GetComponent<arbolVisualController>().creaArbolVisual(niveles, nodo);
 
     }
