@@ -8,6 +8,7 @@ public class arbolVisualController : MonoBehaviour
     public int saltoPorNivel;
     public int saltoHermano;
     public Dictionary<char, List<char>> arbol;
+    public GameObject lineaPrefab;
 
     private float posx = 0;
     private List<char> listasNodosGraficados = new List<char>();
@@ -60,17 +61,26 @@ public class arbolVisualController : MonoBehaviour
         OrdenarJerarquia('A', this.gameObject.transform, hijos);
 
         posx = 0;
-        Invoke("GraficarDesdeRaiz", 0.1f);
+        Invoke("GraficarDesdeRaiz", 0.01f);
+
+        //creo un line renderer y lo meto dentro de el arbol visual.
+        var lineRender = new GameObject();
+        lineRender.name = "LineRender";
+        lineRender.transform.parent = this.transform;
+        Invoke("GraficarLineasDesdeInicio", 0.01f);
     }
 
     public void GraficarDesdeRaiz()
     {
         Graficar('A');
     }
+    public void GraficarLineasDesdeInicio()
+    {
+        graficaLineas('A');
+    }
 
     private void Graficar(char c_nodo)
     {
-        Debug.Log(c_nodo);
         if (tieneHijos(c_nodo))
         {
             //mando a dibujar al primer hijo.
@@ -173,6 +183,42 @@ public class arbolVisualController : MonoBehaviour
                 OrdenarJerarquia(h, GameObject.Find("nodo_" + c_nodoActual).transform.Find("hijos"), new List<char>());
             }
         }
+    }
+
+    public void graficaLineas(char c_nodo)
+    {
+        var nodo = GameObject.Find("nodo_" + c_nodo).gameObject;
+        var listahijos = nodo.transform.Find("hijos");
+        if (listahijos.transform.childCount > 0)
+        {
+            foreach (Transform child in listahijos.transform)
+            {
+                dibujarLinea(child.gameObject, nodo);
+                graficaLineas(child.name.Replace("nodo_", "")[0]);
+            }
+        }
+    }
+    public void dibujarLinea(GameObject a, GameObject b)
+    {
+        //dibuja una linea entre el nodo a y b.
+        Debug.Log("DIBUJO LINEAS ENTRE" + a.name + " " + b.name);
+
+        //crea una instancia del objeto lineaPrefab.
+        var linea = Instantiate(lineaPrefab);
+        linea.name = "linea_" + a.name.Replace("nodo_", "")[0] + b.name.Replace("nodo_", "")[0];
+
+        //lo meto dentro de el objeto Linerender.
+        linea.transform.parent = this.transform.Find("LineRender");
+
+        //le pongo sus coordenadas segun sus objetos a seguir.
+        var aFollow = a.transform.Find("nodoFrente/nodoDetras");
+        var bFollow = b.transform.Find("nodoFrente/nodoDetras");
+
+        Debug.Log(b.name + " está en: " + bFollow.transform.position);
+        linea.GetComponentInParent<LineRenderer>().SetPosition(0, aFollow.transform.position + new Vector3(0, 0, 50));
+        linea.GetComponentInParent<LineRenderer>().SetPosition(1, bFollow.transform.position + new Vector3(0, 0, 50));
+
+
     }
 
 }

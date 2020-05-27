@@ -105,7 +105,7 @@ public class arbolController : MonoBehaviour
             Debug.Log(e);
         }
         //crea arbol visual.
-        Invoke("CrearArbolVisual",0.1f); 
+        Invoke("CrearArbolVisual",0.01f); 
 
     }
 
