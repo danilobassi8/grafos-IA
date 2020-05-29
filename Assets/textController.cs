@@ -13,13 +13,11 @@ public class textController : MonoBehaviour
     void Start()
     {
         camara = Camera.main;
-
     }
 
     // Update is called once per frame
     void Update()
     {
         this.transform.position = padre.transform.position+offset;
-
     }
 }

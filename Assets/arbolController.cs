@@ -29,10 +29,6 @@ public class arbolController : MonoBehaviour
         this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    void Update()
-    {
-
-    }
 
     public void CapturaTextoInterfaz(GameObject textbox)
     {

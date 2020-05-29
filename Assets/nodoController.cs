@@ -16,11 +16,8 @@ public class nodoController : MonoBehaviour
         texto = (GameObject)Instantiate(texto_pegado, GameObject.Find("Canvas Fijo").transform);
         texto.GetComponent<textoSeguidorController>().texto = letra.ToString();
         texto.GetComponent<textoSeguidorController>().FollowThis = this.transform.Find("nodoFrente").transform;
-    }
-
-    void Update()
-    {
-
+        texto.transform.parent = GameObject.Find("UI_textos").transform;
+        texto.name = "txt_"+letra;
     }
 
     void OnDestroy()

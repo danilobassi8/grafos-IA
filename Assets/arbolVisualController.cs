@@ -68,11 +68,17 @@ public class arbolVisualController : MonoBehaviour
         lineRender.name = "LineRender";
         lineRender.transform.parent = this.transform;
         Invoke("GraficarLineasDesdeInicio", 0.01f);
+
+        
+        
     }
 
     public void GraficarDesdeRaiz()
     {
         Graficar('A');
+        //posiciona la camara enfocando al objeto.
+        GameObject a = GameObject.Find("nodo_A/nodoFrente").gameObject;
+        Camera.main.transform.position = new Vector3(a.transform.position.x-50,a.transform.position.y-50,Camera.main.transform.position.z);
     }
     public void GraficarLineasDesdeInicio()
     {
@@ -201,8 +207,6 @@ public class arbolVisualController : MonoBehaviour
     public void dibujarLinea(GameObject a, GameObject b)
     {
         //dibuja una linea entre el nodo a y b.
-        Debug.Log("DIBUJO LINEAS ENTRE" + a.name + " " + b.name);
-
         //crea una instancia del objeto lineaPrefab.
         var linea = Instantiate(lineaPrefab);
         linea.name = "linea_" + a.name.Replace("nodo_", "")[0] + b.name.Replace("nodo_", "")[0];
@@ -214,7 +218,6 @@ public class arbolVisualController : MonoBehaviour
         var aFollow = a.transform.Find("nodoFrente/nodoDetras");
         var bFollow = b.transform.Find("nodoFrente/nodoDetras");
 
-        Debug.Log(b.name + " está en: " + bFollow.transform.position);
         linea.GetComponentInParent<LineRenderer>().SetPosition(0, aFollow.transform.position + new Vector3(0, 0, 50));
         linea.GetComponentInParent<LineRenderer>().SetPosition(1, bFollow.transform.position + new Vector3(0, 0, 50));
 
